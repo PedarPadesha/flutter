@@ -191,8 +191,16 @@ class JSONMethodCodec implements MethodCodec {
   }
 
   @override
-  ByteData encodeErrorEnvelope({required String code, String? message, Object? details}) {
-    return const JSONMessageCodec().encodeMessage(<Object?>[code, message, details])!;
+  ByteData encodeErrorEnvelope({
+    required String code,
+    String? message,
+    Object? details,
+  }) {
+    return const JSONMessageCodec().encodeMessage(<Object?>[
+      code,
+      message,
+      details,
+    ])!;
   }
 }
 
@@ -325,7 +333,9 @@ class StandardMessageCodec implements MessageCodec<Object?> {
     if (message == null) {
       return null;
     }
-    final WriteBuffer buffer = WriteBuffer(startCapacity: _writeBufferStartCapacity);
+    final WriteBuffer buffer = WriteBuffer(
+      startCapacity: _writeBufferStartCapacity,
+    );
     writeValue(buffer, message);
     return buffer.done();
   }
@@ -595,7 +605,9 @@ class StandardMethodCodec implements MethodCodec {
 
   @override
   ByteData encodeMethodCall(MethodCall methodCall) {
-    final WriteBuffer buffer = WriteBuffer(startCapacity: _writeBufferStartCapacity);
+    final WriteBuffer buffer = WriteBuffer(
+      startCapacity: _writeBufferStartCapacity,
+    );
     messageCodec.writeValue(buffer, methodCall.method);
     messageCodec.writeValue(buffer, methodCall.arguments);
     return buffer.done();
@@ -615,15 +627,23 @@ class StandardMethodCodec implements MethodCodec {
 
   @override
   ByteData encodeSuccessEnvelope(Object? result) {
-    final WriteBuffer buffer = WriteBuffer(startCapacity: _writeBufferStartCapacity);
+    final WriteBuffer buffer = WriteBuffer(
+      startCapacity: _writeBufferStartCapacity,
+    );
     buffer.putUint8(0);
     messageCodec.writeValue(buffer, result);
     return buffer.done();
   }
 
   @override
-  ByteData encodeErrorEnvelope({required String code, String? message, Object? details}) {
-    final WriteBuffer buffer = WriteBuffer(startCapacity: _writeBufferStartCapacity);
+  ByteData encodeErrorEnvelope({
+    required String code,
+    String? message,
+    Object? details,
+  }) {
+    final WriteBuffer buffer = WriteBuffer(
+      startCapacity: _writeBufferStartCapacity,
+    );
     buffer.putUint8(1);
     messageCodec.writeValue(buffer, code);
     messageCodec.writeValue(buffer, message);
